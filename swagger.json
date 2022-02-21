@@ -1,0 +1,268 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0", 
+    "title": "System Integration Project",
+    "description": "System Integration Project Application API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "143.244.144.94:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Agents",
+      "description": "API for agent in the system"
+    },
+    {
+      "name": "Comapanies",
+      "description": "API for Comapanies in the system"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "definitions": {
+    "Agent": {
+      "required": ["AGENT_NAME", "WORKING_AREA","COMMISSION","PHONE_NO","COUNTRY"],
+      "properties": {
+        "AGENT_CODE":{
+          "type": "string"  
+        },
+        "AGENT_NAME": {
+          "type": "string"
+        },
+        "WORKING_AREA": {
+          "type": "string"
+        },
+        "COMMISSION": {
+          "type": "number",
+          "format":"float"
+        },
+        "PHONE_NO":{
+            "type":"string",
+            "format":"phone-number"
+        },
+        "COUNTRY":{
+            "type":"string"
+        }
+      }
+    },
+    "PatchAgent": {
+      "properties": {
+        "AGENT_CODE":{
+          "type": "string"  
+        },
+        "AGENT_NAME": {
+          "type": "string"
+        },
+        "WORKING_AREA": {
+          "type": "string"
+        },
+        "COMMISSION": {
+          "type": "number",
+          "format":"float"
+        },
+        "PHONE_NO":{
+            "type":"string",
+            "format":"phone-number"
+        },
+        "COUNTRY":{
+            "type":"string"
+        }
+      }
+    },
+    "Company": {
+      "properties": {
+        "COMPANY_ID":{
+          "type": "string"  
+        },
+        "COMPANY_NAME": {
+          "type": "string"
+        },
+        "COMPANY_CITY": {
+          "type": "string"
+        }
+      }
+    },
+    "Agents": {
+      "type": "array",
+      "$ref": "#/definitions/Agent"
+    },
+    "Companies": {
+      "type": "array",
+      "$ref": "#/definitions/Company"
+    }
+  },
+  "paths": {
+    "/api/getAllAgents": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Get all agents in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Agents"
+            }
+          }
+        }
+      }
+    },
+    "/api/getAgentsByWorkingArea/{workingArea}": {
+        "parameters": [
+        {
+            "name": "workingArea",
+            "in": "path",
+            "required": true,
+            "description": "get all agents with given working area.",
+            "type": "string"
+        }
+        ],
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Get all agents in system with given working area.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Agents"
+            }
+          }
+        }
+      }
+    },
+    "/api/getAllCompanies": {
+      "get": {
+        "tags": ["Comapanies"],
+        "summary": "Get all companies in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Companies"
+            }
+          }
+        }
+      }
+    },
+    "/api/addAgent": {
+      "post": {
+        "tags": ["Agents"],
+        "description": "Create new Agent in system",
+        "parameters": [
+          {
+            "name": "Agent",
+            "in": "body",
+            "description": "Agent that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Agent"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "New Agent is created",
+            "schema": {
+              "$ref": "#/definitions/Agent"
+            }
+          }
+        }
+      }
+    },
+    "/api/patchAgent/{id}": {
+        "parameters": [
+        {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of Agent that we want to Update",
+            "type": "string"
+        }
+        ],
+      "patch": {
+        "tags": ["Agents"],
+        "description": "Update Agent in system",
+        "parameters": [
+          {
+            "name": "Agent",
+            "in": "body",
+            "description": "Agent that we want to Update",
+            "schema": {
+              "$ref": "#/definitions/PatchAgent"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Updated agent",
+            "schema": {
+              "$ref": "#/definitions/PatchAgent"
+            }
+          }
+        }
+      }
+    },
+    "/api/updateAgent/{id}": {
+        "parameters": [
+        {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of Agent that we want to Update",
+            "type": "string"
+        }
+        ],
+      "put": {
+        "tags": ["Agents"],
+        "description": "Update Agent in system",
+        "parameters": [
+          {
+            "name": "Agent",
+            "in": "body",
+            "description": "Agent that we want to Update",
+            "schema": {
+              "$ref": "#/definitions/Agent"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Updated agent",
+            "schema": {
+              "$ref": "#/definitions/Agent"
+            }
+          }
+        }
+      }
+    },
+    "/api/deleteAgent/{id}": {
+        "parameters": [
+        {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of Agent that we want to Delete",
+            "type": "string"
+        }
+        ],
+        "delete":{
+            "summary": "Delete Agent with given ID",
+            "tags": ["Agents"],
+            "responses": {
+            "200": {
+                "description": "Agent is deleted",
+                "schema": {
+                "$ref": "#/definitions/Agent"
+                }
+             }
+        }
+    }
+    }
+  }
+}
