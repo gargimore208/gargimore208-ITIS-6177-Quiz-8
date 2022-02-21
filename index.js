@@ -8,7 +8,7 @@ var shortid = require('shortid');
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(
-  '/api-docs',
+  '/docs',
   swaggerUi.serve, 
   swaggerUi.setup(swaggerDocument)
 );
