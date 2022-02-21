@@ -130,7 +130,28 @@ app.patch("/api/patchAgent/:id",validateAgentPatch,async(req,res)=>{
     if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
 	}
-
+    try {
+        let AGENT_CODE = req.params.id;
+        conn = await pool.getConnection();
+        let queryCheck = `SELECT * from agents where AGENT_CODE='${AGENT_CODE}'`;
+        const rowsCheck = await conn.query(queryCheck);
+        if(rowsCheck.length == 0){
+            res.status(400).send({"message":"Invalid Agent Id"});
+        }
+        let query = `Update agents set 
+        AGENT_NAME='${req.body.AGENT_NAME}',
+        WORKING_AREA='${req.body.WORKING_AREA}',
+        COMMISSION='${req.body.COMMISSION}',
+        PHONE_NO='${req.body.PHONE_NO}',
+        COUNTRY='${req.body.COUNTRY}' 
+        where AGENT_CODE='${AGENT_CODE}'`;
+        const rows = await conn.query(query);
+        res.json(rows);
+    } catch (err) {
+            throw err;
+    } finally {
+            if (conn) return conn.end();
+    }
 })
 
 app.put("/api/updateAgent/:id",validateAgent,async(req,res)=>{
