@@ -15,6 +15,7 @@ app.use(
 app.use(cors());
 
 const mariadb = require('mariadb');
+const { default: axios } = require('axios');
 const pool = mariadb.createPool({
 	host: "143.244.144.94",
 	user: 'root',
@@ -207,6 +208,18 @@ app.delete("/api/deleteAgent/:id",async(req,res)=>{
             if (conn) return conn.end();
     }
 })
+
+app.get("/say",async(req,res)=>{
+   const url = "https://5mi5fd3f51.execute-api.us-east-1.amazonaws.com/hello_name?keyword="+req.query.keyword;
+   console.log("inside");
+   axios.get(url)
+   .then((response)=>{
+        res.send(response.data);
+   }).catch((error)=>{
+        console.log(error);
+        res.send(error);
+   })
+});
 
 let port = 3000;
 
